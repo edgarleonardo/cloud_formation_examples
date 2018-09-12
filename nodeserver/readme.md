@@ -1,6 +1,6 @@
 ## Let's see a demo
 
-I am going to create below infrastructure using Cloudformation:
+This is an infrastructure using Cloudformation for creating and automating the configuration of NodeJs in a EC2 and expose the app through the port 80:
 
 ![enter image description here](https://raw.githubusercontent.com/edgarleonardo/cloud_formation_examples/master/nodeserver/nodejswebserver.jpg)
 
