@@ -26,12 +26,12 @@ Now let's explain the base of the json:
 When we finish up our template we just run the next script from the *CLI*:
 
 > **For Creating the stack on AWS from CLI**
-aws cloudformation create-stack --stack-name node-server --template-body file://node-webserver.json 
+aws cloudformation create-stack --stack-name bastion-host-for-ssh --template-body file://ssh-bastion-ec2.json --parameters ParameterKey=VPC, ParameterValue=YOUR_VPC_ID, ParameterKey=NetworkSubnet, ParameterValue=YOU_SUBNET_ON_VPC, ParameterKey=KeyPair, ParameterValue=SSH_PUB_KEY, ParameterKey=Ec2InstanceType, ParameterValue=t2.micro
 
 > **For checking if the stack is already created from CLI**
 aws cloudformation describe-stacks
 
 > **For Deleting the stack from CLI**
-aws cloudformation delete-stack --stack-name  node-server
+aws cloudformation delete-stack --stack-name bastion-host-for-ssh
 
 When you create you stack, you will be able to see the components created in AWS.
