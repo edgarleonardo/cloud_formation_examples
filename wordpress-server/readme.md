@@ -30,12 +30,12 @@ Now let's explain the base of the json:
 When we finish up our template we just run the next script from the *CLI*:
 
 > **For Creating the stack on AWS from CLI**
-aws cloudformation create-stack --stack-name node-server --template-body file://node-webserver.json 
+aws cloudformation create-stack --stack-name wordpress-stack --template-body file://wordpress.json --parameters ParameterKey=VPC, ParameterValue=YOUR_VPC_ID, ParameterKey=Subnets, ParameterValue=YOU_SUBNET_ON_VPC
 
 > **For checking if the stack is already created from CLI**
 aws cloudformation describe-stacks
 
 > **For Deleting the stack from CLI**
-aws cloudformation delete-stack --stack-name  node-server
+aws cloudformation delete-stack --stack-name wordpress-stack
 
 When you create you stack, you will be able to see the components created in AWS.
