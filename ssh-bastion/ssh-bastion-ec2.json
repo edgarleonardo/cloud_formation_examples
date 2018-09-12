@@ -1,0 +1,74 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This is an implementation for SSH Bastion Host",
+    "Parameters": {
+		"VPC": {
+			"Description": "The VPC to select",
+			"Type": "AWS::EC2::VPC::Id"
+		},
+		"NetworkSubnet": {
+			"Description": "A public subnet in the VPC",
+			"Type": "AWS::EC2::Subnet::Id"
+		},
+		"KeyPair": {
+			"Description": "A SSH key pair to be able to connect with the host on the indicated subnet",
+			"Type": "AWS::EC2::KeyPair::KeyName"
+		},
+		"Ec2InstanceType": {
+			"Description": "The Ec2 type host.",
+			"Type": "String",
+			"AllowedValues": ["t2.micro", "t2.small"]
+		}
+	},
+    "Resources":
+    {
+        "EC2BastionHost":{
+            "Type": "AWS::EC2:Instance",
+			"Properties": {
+				"ImageId": {"Fn::FindInMap": ["RegionMap", {"Ref": "AWS::Region"}, "AMI"]},
+				"InstanceType": {"Ref": "Ec2InstanceType"},
+				"NetworkInterfaces": [{
+					"AssociatePublicIpAddress": "true",
+					"DeviceIndex": "0",
+					"GroupSet": [{"Ref": "BastionEc2SecurityGroup"}],
+					"SubnetId": {"Ref": "NetworkSubnet"}
+				}],
+				"Tags": [{
+					"Key": "Name",
+					"Value": "bastion-host-for-ssh"
+				}],
+				"KeyName": {"Ref": "KeyPair"}
+			}
+        },
+		"BastionEc2SecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"Properties": {
+				"GroupDescription": "bastion-host-for-ssh",
+				"VpcId": {"Ref": "VPC"},
+				"SecurityGroupIngress": [{
+					"CidrIp": "0.0.0.0/0",
+					"FromPort": 22,
+					"IpProtocol": "tcp",
+					"ToPort": 22
+				}]
+			}
+		},
+        "EC2BastionHostElasticIP": {
+			"Type": "AWS::EC2::EIP",
+			"Properties": {
+				"InstanceId": {"Ref": "EC2BastionHost"},
+				"Domain": "vpc"
+			}
+		}
+    },
+    "Outputs": {
+		"SSHBastionHost": {
+			"Description": "Public IP address of SSH EC2 host.",
+			"Value": {"Ref": "EC2BastionHostElasticIP"}
+		},
+		"SSHBastionHostPrivateIp": {
+			"Description": "Private IP address of SSH bastion host.",
+			"Value": {"Fn::GetAtt": ["EC2BastionHost", "PrivateIp"]}
+		}
+	}
+}

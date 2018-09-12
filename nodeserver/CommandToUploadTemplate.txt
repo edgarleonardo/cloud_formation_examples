@@ -1,0 +1,8 @@
+# For Creating the stack on AWS
+aws cloudformation create-stack --stack-name node-server --template-body file://node-webserver.json
+
+# For checking if the stack is already created
+aws cloudformation describe-stacks
+
+# For Delete the stack from CLI
+aws cloudformation delete-stack --stack-name  node-server

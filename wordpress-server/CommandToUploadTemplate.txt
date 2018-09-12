@@ -1,0 +1,8 @@
+# For Creating the stack on AWS
+aws cloudformation create-stack --stack-name wordpress-stack --template-body file://wordpress.json --parameters ParameterKey=VPC, ParameterValue=YOUR_VPC_ID, ParameterKey=Subnets, ParameterValue=YOU_SUBNET_ON_VPC
+
+# For checking if the stack is already created
+aws cloudformation describe-stacks
+
+# For Delete the stack from CLI
+aws cloudformation delete-stack --stack-name wordpress-stack
